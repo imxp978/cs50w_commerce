@@ -4,7 +4,7 @@
     <h2>Active Listings</h2>
     {% for i in listing %}
     <div>
-        <img src="{{ i.photo }}" width="400px"/>        
+        <a href="{% url 'listing' listing_id=i.id %}"><img src="{{ i.photo }}" width="400px"/></a>      
         <h3><a href="{% url 'listing' listing_id=i.id %}">{{ i.title }}</a></h3>
         {% if i.currentprice == 0 %}
             <p>Starting Price: ${{ i.price }}</p>

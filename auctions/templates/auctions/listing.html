@@ -16,7 +16,6 @@
                     <option value="True">Activate</option>
                     <option value="False">Disactive</option>
                 </select>
-                <br>
                 <input type="submit" value="Update">
             </form>
         </div>
@@ -37,9 +36,9 @@
             {% endif %}
             {{ listing.title }}</h2>
         <img src="{{ listing.photo }}" width="400px"/>      
-        <p>Starting Price: ${{ listing.price }}</p>
+        <p><b>Starting Price: </b>${{ listing.price }}</p>
         {% if top %}
-            <p>Current Price: ${{ top.price }}</p>
+            <p><b>Current Price: </b>${{ top.price }}</p>
         {% endif %}
 
         {% if counter %}
@@ -49,12 +48,12 @@
         {% endif %}
 
         {% if listing.category %}
-            <p>Category: {{ listing.category }}</p>
+            <p><b>Category: </b>{{ listing.category }}</p>
         {% else %}
             <p>No Category</p>
         {% endif %}
-        <p>Start from: {{ listing.time }}</p>
-        <p>Created by  {{ listing.user }}</p> 
+        <p><b>Start from: </b>{{ listing.time }}</p>
+        <p><b>Created by: </b>{{ listing.user }}</p> 
         <p>{{ listing.description }}</p>
     </div>
     <br>
@@ -64,14 +63,14 @@
         {% if user in listing.watchlistuser.all %}
             <div name="removefromwatchlist">
                 <form action="{% url 'listing' listing.id %}" method="post">
-                    <input type="submit" name="remove" value="Remove From Watchlist">
+                    <input type="submit" name="remove" value="Remove"> from Watchlist
                     {% csrf_token%}
                 </form>
             </div>
         {% else %}
             <div name="addtowatchlist">
                 <form action="{% url 'listing' listing.id %}" method="post">
-                    <input type="submit" name="add" value="Add to Watchlist">
+                    <input type="submit" name="add" value="Add">  to Watchlist
                     {% csrf_token%}
                 </form>
             </div>

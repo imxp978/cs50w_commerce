@@ -1,0 +1,123 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+    {% if user == listing.user %}
+        {% if listing.activation %}
+            <div name="edit_button">
+                <p><a href="{% url 'edit' listing.id %}">Edit Listing</a></p>
+            </div>
+        {% endif %}
+        <br>
+        <div name="activation_status">
+            <form action="{% url 'listing' listing.id %}" method="post">
+                {% csrf_token %}
+                <select name="activation" >
+                    <option value="" disabled selected>Activation Status</option>
+                    <option value="True">Activate</option>
+                    <option value="False">Disactive</option>
+                </select>
+                <br>
+                <input type="submit" value="Update">
+            </form>
+        </div>
+    {% endif %}
+
+    {% if not listing.activation and top and top.bidder == user %}
+        <div name="winner">
+            <h2>Congradulation! You Won!</h2>
+            <br>
+        </div>
+    {% endif %}
+
+    <div name="listing_info">
+           
+        <h2>
+            {% if not listing.activation %}
+                [Desactived]
+            {% endif %}
+            {{ listing.title }}</h2>
+        <img src="{{ listing.photo }}" width="400px"/>      
+        <p>Starting Price: ${{ listing.price }}</p>
+        {% if top %}
+            <p>Current Price: ${{ top.price }}</p>
+        {% endif %}
+
+        {% if counter %}
+            <p><a href="{% url 'bid' listing.id %}">{{ counter }}</a> bids</p>
+        {% else %}
+            <p>No bid yet</p>
+        {% endif %}
+
+        {% if listing.category %}
+            <p>Category: {{ listing.category }}</p>
+        {% else %}
+            <p>No Category</p>
+        {% endif %}
+        <p>Start from: {{ listing.time }}</p>
+        <p>Created by  {{ listing.user }}</p> 
+        <p>{{ listing.description }}</p>
+    </div>
+    <br>
+    
+    {% if user.is_authenticated %}
+    <div name="watchlist"></div>
+        {% if user in listing.watchlistuser.all %}
+            <div name="removefromwatchlist">
+                <form action="{% url 'listing' listing.id %}" method="post">
+                    <input type="submit" name="remove" value="Remove From Watchlist">
+                    {% csrf_token%}
+                </form>
+            </div>
+        {% else %}
+            <div name="addtowatchlist">
+                <form action="{% url 'listing' listing.id %}" method="post">
+                    <input type="submit" name="add" value="Add to Watchlist">
+                    {% csrf_token%}
+                </form>
+            </div>
+        {% endif %}    
+    </div>
+    {% endif %}    
+    
+    <br>
+
+    {% if user.is_authenticated %}
+        {% if listing.activation %}
+        <div name="bid">
+            <h3>Place Your Bid</h3>
+            <form name="bid" action="{% url 'listing' listing.id %}" method="POST">
+                {% csrf_token %}
+                <input type="number" name="placebid" placeholder="Place Your Bid" step="0.01" min="0" required>
+                <input type="submit" value="Bid">
+            </form>
+        </div>
+        {% endif %}
+    {% else %}
+        <h6><a href="{% url 'login' %}">Login</a> to Place a Bid</h6>
+    {% endif %}
+    <br>
+    <div name="comment">
+        <h3>Comments</h3>
+        {% if not comment %}
+            <p>Add the First Comment</p>
+        {% else %}
+            {% for c in comment %}
+                <h6>{{ c.user }}</h6>
+                <p>{{ c.time }}</p>
+                <p>{{ c.comment }}</p>
+                <br>
+            {% endfor %}
+        {% endif %}
+        {% if user.is_authenticated %}
+            {% if listing.activation %}
+                <form action="{% url 'listing' listing.id %}", method="POST">
+                    {% csrf_token %}
+                    <textarea name="new_comment" placeholder="Write your comment" required></textarea><br>
+                    <input type="submit" value="Comment"></input>
+                </form>
+            {% endif %}
+        {% else %}
+            <h6><a href="{% url 'login' %}">Login</a> to Add a Comment</h6>
+        {% endif %}
+    </div>
+{% endblock %}

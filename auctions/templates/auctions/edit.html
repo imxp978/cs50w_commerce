@@ -1,0 +1,41 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+    <h1>Edit Listing</h1>
+    <form action="{% url 'edit' listing.id %}" method="POST">
+        {% csrf_token %}
+        <label for="title">Item Name: </label><br>
+        <input type="text" name="title" value="{{ listing.title }}" required>
+        <br>
+
+        <label for="category">Category: </label><br>
+        <select name="category">
+            
+            {% for i in categories %}
+                {% if i == listing.category %}
+                    <option selected value="{{ i }}">{{ i }}</option>
+                {% else %}
+                    <option value="{{ i }}">{{ i }}</option>
+                {% endif %}
+            {% endfor %}
+        </select>
+        <br>
+        <label for="description">Item Description: </label><br>
+        <textarea name="description">{{ listing.description }}</textarea>
+        <br>
+
+        <label for="photo">Photo URL: </label><br>
+        <input type="URL" name="photo" value="{{ listing.photo }}">
+        <br>
+
+        <label for="activation">Activate? </label><br>
+        <select name="activation" >
+            <option value="True">Yes</option>
+            <option value="False">No</option>
+        </select>
+        <br>
+
+        <input type="submit" value="Submit">
+        <br>
+    </form>
+{% endblock %}

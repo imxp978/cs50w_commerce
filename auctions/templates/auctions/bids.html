@@ -1,0 +1,31 @@
+{% extends 'auctions/layout.html' %}
+
+{% block body %}
+
+<h2>Bidding History</h2>
+<div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Price</th>
+                <th>Bidder</th>
+                <th>Time</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for i in bid %}
+            <tr>
+                <td>${{ i.price }}</td>
+                <td>{{ i.bidder }}</td>
+                <td>{{ i.time }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+
+
+</div>
+
+{% endblock %}

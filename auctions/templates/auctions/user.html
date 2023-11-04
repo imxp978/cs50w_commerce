@@ -1,0 +1,43 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+<div name="user_info">
+    <h3>Welcome {{ user.username }}</h3>
+</div>
+<div name="listing">
+    <h5>Listing Created</h5>
+    <ul>
+        {% for i in listing %}
+            <li><a href="{% url 'listing' i.id %}">{{ i.title }}</a></li>
+        {% endfor %}
+        {% if not listing %}
+            No Listing Yet
+        {% endif %}
+    </ul>
+    
+
+</div>
+<div name="id">
+    <h5>Bidding History</h5>
+    <ul>
+        {% for i in bid %}
+            <li><a href="{% url 'listing' i.listing.id %}">{{ i.listing.title }} </a>${{ i.price }} </li>
+        {% endfor %}
+        {% if not bid %}
+            No bid Yet
+        {% endif %}
+    </ul>
+    
+</div>
+<div name="watchlist">
+    <h5>Watchlist</h5>
+    <ul>
+        {% for i in user.watchlist.all %}
+            <li><a href="{% url 'listing' i.id %}">{{ i.title }} </a></li>
+        {% endfor %}
+        {% if not user.watchlist %}
+            No Watchlisting Yet
+        {% endif %}
+    </ul>
+</div>
+{% endblock %}

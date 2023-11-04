@@ -1,0 +1,23 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+    <h2>Active Listings</h2>
+    {% for i in listing %}
+    <div>
+        <img src="{{ i.photo }}" width="400px"/>        
+        <h3><a href="{% url 'listing' listing_id=i.id %}">{{ i.title }}</a></h3>
+        {% if i.currentprice == 0 %}
+            <p>Starting Price: ${{ i.price }}</p>
+        {% else %}
+            <p>Current Price: ${{ i.currentprice }}</p>
+        {% endif %}
+
+        <p>Starting Time: {{ i.time }}</p>
+        <p>Category: {{ i.category }}</p>
+    </div>
+    <div>
+        <br>
+    </div>
+    {% endfor %}
+
+{% endblock %}
